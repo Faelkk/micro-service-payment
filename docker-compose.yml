@@ -1,0 +1,103 @@
+services:
+  # Banco para Product
+  db-product:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: db-product
+    networks:
+      - my-api-payment
+    ports:
+      - "1434:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=ProductDbPassword!
+      - MSSQL_PID=Developer
+
+  # Banco para Order
+  db-order:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: db-order
+    networks:
+      - my-api-payment
+    ports:
+      - "1435:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=OrderDbPassword!
+      - MSSQL_PID=Developer
+
+  # Banco para Payment
+  db-payment:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: db-payment
+    networks:
+      - my-api-payment
+    ports:
+      - "1436:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=PaymentDbPassword!
+      - MSSQL_PID=Developer
+
+  product.services:
+    container_name: product.service
+    build: ./Product.Service
+    networks:
+      - my-api-payment
+    depends_on:
+      - db-product
+    ports:
+      - 5010:5010
+    environment:
+      - APIPORT=5010
+      - DBSERVER=db-product
+      - DBNAME=productdb
+      - DBUSER=sa
+      - DBPASSWORD=ProductDbPassword!
+
+  order.services:
+    container_name: order.service
+    build: ./Order.Service
+    networks:
+      - my-api-payment
+    depends_on:
+      - db-order
+    ports:
+      - 5011:5011
+    environment:
+      - APIPORT=5011
+      - DB_HOST=db-order
+      - DB_PORT=1433
+      - DB_NAME=orderdb
+      - DB_USER=sa
+      - DB_PASSWORD=OrderDbPassword!
+
+  payment.services:
+    container_name: payment.service
+    build: ./Payment.Service
+    networks:
+      - my-api-payment
+    depends_on:
+      - db-payment
+    environment:
+      - DB_HOST=db-payment
+      - DB_PORT=1433
+      - DB_NAME=paymentdb
+      - DB_USER=sa
+      - DB_PASSWORD=PaymentDbPassword!
+  api.gateway:
+    container_name: api.gateway
+    build: ./ApiGateway.Ocelot
+    ports:
+      - "5012:5012"
+    environment:
+     - APIPORT=5012
+    networks:
+      - my-api-payment
+    depends_on:
+      - product.services
+      - order.services
+      - payment.services
+
+networks:
+  my-api-payment:
+    driver: bridge
