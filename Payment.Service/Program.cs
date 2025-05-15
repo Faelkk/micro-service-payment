@@ -20,6 +20,8 @@ builder.WebHost.UseUrls($"http://*:{port}");
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Configuration.AddEnvironmentVariables();
+
 
 var app = builder.Build();
 

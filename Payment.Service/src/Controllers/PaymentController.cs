@@ -11,10 +11,15 @@ public class PaymentController : ControllerBase
 
     private readonly IPaymentRepository paymentRepository;
 
-    public PaymentController(IPaymentRepository paymentRepository)
+
+    private readonly IConfiguration configuration;
+
+    public PaymentController(IPaymentRepository paymentRepository, IConfiguration configuration)
     {
         this.paymentRepository = paymentRepository;
+        this.configuration = configuration;
     }
+
 
     [HttpPost("create-checkout-session")]
     public IActionResult CreateCheckoutSession([FromBody] CreateCheckoutSessionRequest request)
@@ -42,10 +47,7 @@ public class PaymentController : ControllerBase
 {
     { "orderId", request.OrderId.ToString() }
 }
-
         };
-
-
 
         var service = new SessionService();
         Session session = service.Create(options);
@@ -61,7 +63,9 @@ public class PaymentController : ControllerBase
     {
         var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
-        const string endpointSecret = "whsec_6594218e526a7abc92aaf7237fcb69c973e4000496af11ddada5472d3f89d128";
+        var endpointSecret = configuration["Stripe:WebhookSecret"];
+
+
         try
         {
             var stripeEvent = EventUtility.ConstructEvent(
