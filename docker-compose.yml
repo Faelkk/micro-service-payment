@@ -76,6 +76,8 @@ services:
     build: ./Payment.Service
     networks:
       - my-api-payment
+    ports:
+      - "5013:5013"
     depends_on:
       - db-payment
     environment:
@@ -84,6 +86,7 @@ services:
       - DB_NAME=paymentdb
       - DB_USER=sa
       - DB_PASSWORD=PaymentDbPassword!
+      - APIPORT=5013
   api.gateway:
     container_name: api.gateway
     build: ./ApiGateway.Ocelot

@@ -17,8 +17,6 @@ public class OrderRepository : IOrderRepository
 
 
 
-
-
     public IEnumerable<OrderResponseDto> GetAll()
     {
         var orders = databaseContext.Orders.Select(o => new OrderResponseDto
@@ -79,18 +77,16 @@ public class OrderRepository : IOrderRepository
         var orderItems = new List<OrderItem>();
         int totalPrice = 0;
 
+        var checkoutItems = new List<SessionItem>();
+
         foreach (var item in orderDto.Items)
         {
-
             var response = await httpClient.GetAsync($"/products/{item.ProductId}").ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
-            {
                 throw new Exception($"Product with ID {item.ProductId} not found.");
-            }
 
             var productJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
 
             var product = System.Text.Json.JsonSerializer.Deserialize<ProductDto>(productJson, new System.Text.Json.JsonSerializerOptions
             {
@@ -107,6 +103,13 @@ public class OrderRepository : IOrderRepository
 
             totalPrice += product.Price * item.Quantity;
             orderItems.Add(orderItem);
+
+            checkoutItems.Add(new SessionItem
+            {
+                ProductName = product.Name,
+                UnitAmount = product.Price,
+                Quantity = item.Quantity
+            });
         }
 
         var order = new Models.Order
@@ -120,12 +123,29 @@ public class OrderRepository : IOrderRepository
         databaseContext.Orders.Add(order);
         await databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
+
+        var checkoutRequest = new CreateCheckoutSessionRequest
+        {
+            Items = checkoutItems,
+            OrderId = order.Id.ToString(),
+            SuccessUrl = $"http://localhost:3000/payment/success?orderId={order.Id}",
+            CancelUrl = $"http://localhost:3000/payment/cancel?orderId={order.Id}"
+        };
+
+        var responseCheckout = await httpClient.PostAsJsonAsync("/payments/create-checkout-session", checkoutRequest);
+
+        if (!responseCheckout.IsSuccessStatusCode)
+            throw new Exception("Failed to create checkout session.");
+
+        var checkoutResponse = await responseCheckout.Content.ReadFromJsonAsync<CheckoutSessionResponse>();
+
         return new OrderResponseDto
         {
             Id = order.Id,
             PaymentStatus = order.PaymentStatus,
             CreatedAt = order.CreatedAt,
             TotalPrice = order.TotalPrice,
+            CheckoutUrl = checkoutResponse?.Url,
             Items = order.Items.Select(i => new OrderItemResponseDto
             {
                 ProductId = i.ProductId,

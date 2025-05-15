@@ -17,7 +17,6 @@ builder.Services.AddHttpClient<IOrderRepository, OrderRepository>(client =>
 });
 
 
-
 builder.Services.AddOpenApi();
 
 
