@@ -22,7 +22,7 @@ jobs:
 
       - name: Deploy Product Service to Railway
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway up --service product-service Product.Service
 
   deploy-order:
@@ -41,7 +41,7 @@ jobs:
 
       - name: Deploy Order Service to Railway
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway up --service order-service Order.Service
 
   deploy-payment:
@@ -60,7 +60,7 @@ jobs:
 
       - name: Deploy Payment Service to Railway
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway up --service payment-service Payment.Service
 
   deploy-api-gateway:
@@ -79,5 +79,5 @@ jobs:
 
       - name: Deploy API Gateway to Railway
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway up --service api-gateway ApiGateway.Ocelot
