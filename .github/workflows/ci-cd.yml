@@ -20,10 +20,13 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
+      - name: Debug - List Product Folder
+        run: ls -la Product.Service
+
       - name: Deploy Product Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service product-service Product.Service
+        run: railway up --service product Product.Service
 
   deploy-order:
     if: contains(github.event.head_commit.message, 'Order.Service') || startsWith(github.ref, 'refs/heads/')
@@ -39,10 +42,13 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
+      - name: Debug - List Order Folder
+        run: ls -la Order.Service
+
       - name: Deploy Order Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service order-service Order.Service
+        run: railway up --service order Order.Service
 
   deploy-payment:
     if: contains(github.event.head_commit.message, 'Payment.Service') || startsWith(github.ref, 'refs/heads/')
@@ -58,10 +64,13 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
+      - name: Debug - List Payment Folder
+        run: ls -la Payment.Service
+
       - name: Deploy Payment Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service payment-service Payment.Service
+        run: railway up --service payment Payment.Service
 
   deploy-api-gateway:
     if: contains(github.event.head_commit.message, 'ApiGateway.Ocelot') || startsWith(github.ref, 'refs/heads/')
@@ -76,6 +85,9 @@ jobs:
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
+
+      - name: Debug - List API Gateway Folder
+        run: ls -la ApiGateway.Ocelot
 
       - name: Deploy API Gateway to Railway
         env:
