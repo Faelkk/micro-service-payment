@@ -18,58 +18,70 @@ jobs:
           node-version: "18"
 
       - name: Install Railway CLI
-        run: npm install -g railway
+        run: npm install -g @railway/cli
 
       - name: Deploy Product Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
         run: |
-          railway up --service product-service --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir Product.Service
+          railway up --service product-service --rootDir Product.Service
 
   deploy-order:
     if: contains(github.event.head_commit.message, 'Order.Service') || startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install -g @railway/cli
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
       - name: Deploy Order Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
         run: |
-          railway up --service order-service --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir Order.Service
+          railway up --service order-service --rootDir Order.Service
 
   deploy-payment:
     if: contains(github.event.head_commit.message, 'Payment.Service') || startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install -g @railway/cli
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
       - name: Deploy Payment Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
         run: |
-          railway up --service payment-service --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir Payment.Service
+          railway up --service payment-service --rootDir Payment.Service
 
   deploy-api-gateway:
     if: contains(github.event.head_commit.message, 'ApiGateway.Ocelot') || startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install -g @railway/cli
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
       - name: Deploy API Gateway to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
         run: |
-          railway up --service api-gateway --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir ApiGateway.Ocelot
+          railway up --service api-gateway --rootDir ApiGateway.Ocelot
