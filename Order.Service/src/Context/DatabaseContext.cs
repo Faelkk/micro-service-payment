@@ -15,16 +15,15 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var server = Environment.GetEnvironmentVariable("DBSERVER");
-        var database = Environment.GetEnvironmentVariable("DBNAME");
-        var dbuser = Environment.GetEnvironmentVariable("DBUSER");
-        var dbpass = Environment.GetEnvironmentVariable("DBPASSWORD");
+        var server = Environment.GetEnvironmentVariable("DB_HOST");
+        var port = Environment.GetEnvironmentVariable("DB_PORT");
+        var database = Environment.GetEnvironmentVariable("DB_NAME");
+        var dbuser = Environment.GetEnvironmentVariable("DB_USER");
+        var dbpass = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-        // var connectionString = $"Server={server};Database={database};User={dbuser};Password={dbpass};TrustServerCertificate=True";
+        var connectionString = $"Host={server};Port={port};Database={database};Username={dbuser};Password={dbpass}";
 
-        var connectionString = $"Server=db-order;Database=orderdb;User=sa;Password=OrderDbPassword!;TrustServerCertificate=True";
-
-        optionsBuilder.UseSqlServer(connectionString);
-
+        optionsBuilder.UseNpgsql(connectionString);
     }
+
 }

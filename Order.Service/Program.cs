@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddControllers();
 builder.Services.AddDbContext<DatabaseContext>();
+
 builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddHttpClient<IOrderRepository, OrderRepository>(client =>
