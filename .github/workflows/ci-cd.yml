@@ -1,12 +1,10 @@
 name: CI/CD Microservices Railway
 
 on:
+  on:
   push:
-    paths:
-      - "Product.Service/**"
-      - "Order.Service/**"
-      - "Payment.Service/**"
-      - "ApiGateway.Ocelot/**"
+    branches:
+      - test-ci-cd
 
 jobs:
   deploy-product:
