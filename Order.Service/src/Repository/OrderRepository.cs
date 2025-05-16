@@ -35,7 +35,7 @@ public class OrderRepository : IOrderRepository
 
         if (!orders.Any())
         {
-            throw new Exception("No products were found");
+            throw new Exception("No orders were found");
         }
 
         return orders;
