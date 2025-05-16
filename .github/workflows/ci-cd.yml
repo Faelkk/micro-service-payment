@@ -1,7 +1,6 @@
 name: CI/CD Microservices Railway
 
 on:
-  on:
   push:
     branches:
       - test-ci-cd
