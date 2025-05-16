@@ -4,12 +4,11 @@ using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<IPaymentRepository, PaymentRepository>(client =>
 {
-    client.BaseAddress = new Uri("https://api-gateway-production-2bd6.up.railway.app");
+    client.BaseAddress = new Uri("http://order-production.up.railway.app");
 });
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));

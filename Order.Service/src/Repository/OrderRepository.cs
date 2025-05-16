@@ -7,14 +7,15 @@ namespace Order.Repository;
 public class OrderRepository : IOrderRepository
 {
     private readonly IDatabaseContext databaseContext;
-    private readonly HttpClient httpClient;
+    private readonly HttpClient productClient;
+    private readonly HttpClient paymentClient;
 
-    public OrderRepository(IDatabaseContext databaseContext, HttpClient httpClient)
+    public OrderRepository(IDatabaseContext databaseContext, IHttpClientFactory httpClientFactory)
     {
         this.databaseContext = databaseContext;
-        this.httpClient = httpClient;
+        this.productClient = httpClientFactory.CreateClient("ProductService");
+        this.paymentClient = httpClientFactory.CreateClient("PaymentService");
     }
-
 
 
     public IEnumerable<OrderResponseDto> GetAll()
@@ -81,7 +82,7 @@ public class OrderRepository : IOrderRepository
 
         foreach (var item in orderDto.Items)
         {
-            var response = await httpClient.GetAsync($"/products/{item.ProductId}").ConfigureAwait(false);
+            var response = await productClient.GetAsync($"/product/{item.ProductId}").ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Product with ID {item.ProductId} not found.");
@@ -132,7 +133,7 @@ public class OrderRepository : IOrderRepository
             CancelUrl = $"http://localhost:3000/payment/cancel?orderId={order.Id}"
         };
 
-        var responseCheckout = await httpClient.PostAsJsonAsync("/payments/create-checkout-session", checkoutRequest);
+        var responseCheckout = await paymentClient.PostAsJsonAsync("/payment/create-checkout-session", checkoutRequest);
 
         if (!responseCheckout.IsSuccessStatusCode)
             throw new Exception("Failed to create checkout session.");

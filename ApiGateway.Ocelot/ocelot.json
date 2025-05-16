@@ -2,60 +2,59 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/product",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "product-production-3c23.up.railway.app", "Port": 443 }
+        { "Host": "product-production-3c23.up.railway.app", "Port": 80 }
       ],
-      "UpstreamPathTemplate": "/products",
+      "UpstreamPathTemplate": "/product",
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
       "DownstreamPathTemplate": "/product/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "product-production-3c23.up.railway.app", "Port": 443 }
+        { "Host": "product-production-3c23.up.railway.app", "Port": 80 }
       ],
-      "UpstreamPathTemplate": "/products/{id}",
+      "UpstreamPathTemplate": "/product/{id}",
       "UpstreamHttpMethod": [ "GET", "PATCH", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/order",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "order-production.up.railway.app", "Port": 443 }
+        { "Host": "order-production.up.railway.app", "Port": 80 }
       ],
-      "UpstreamPathTemplate": "/orders",
+      "UpstreamPathTemplate": "/order",
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
       "DownstreamPathTemplate": "/order/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "order-production.up.railway.app", "Port": 443 }
+        { "Host": "order-production.up.railway.app", "Port": 80 }
       ],
-      "UpstreamPathTemplate": "/orders/{id}",
+      "UpstreamPathTemplate": "/order/{id}",
       "UpstreamHttpMethod": [ "GET", "PATCH", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/payment/create-checkout-session",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "payment-production-9323.up.railway.app", "Port": 443 }
+        { "Host": "payment-production-9323.up.railway.app", "Port": 80 }
       ],
-      "UpstreamPathTemplate": "/payments/create-checkout-session",
+      "UpstreamPathTemplate": "/payment/create-checkout-session",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
       "DownstreamPathTemplate": "/payment/webhook",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "payment-production-9323.up.railway.app", "Port": 443 }
+        { "Host": "payment-production-9323.up.railway.app", "Port": 80 }
       ],
-      "UpstreamPathTemplate": "/payments/webhook",
+      "UpstreamPathTemplate": "/payment/webhook",
       "UpstreamHttpMethod": [ "POST" ]
     }
   ],
-  
   "GlobalConfiguration": {
     "BaseUrl": "https://api-gateway-production-2bd6.up.railway.app"
   }
