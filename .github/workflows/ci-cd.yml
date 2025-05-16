@@ -1,0 +1,62 @@
+name: CI/CD Microservices Railway
+
+on:
+  push:
+    paths:
+      - "Product.Service/**"
+      - "Order.Service/**"
+      - "Payment.Service/**"
+      - "ApiGateway.Ocelot/**"
+
+jobs:
+  deploy-product:
+    if: contains(github.event.head_commit.message, 'Product.Service') || startsWith(github.ref, 'refs/heads/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy Product Service to Railway
+        uses: railwayapp/railway-deploy@v1
+        with:
+          apiKey: ${{ secrets.RAILWAY_API_KEY }}
+          projectId: ${{ secrets.PRODUCT_PROJECT_ID }}
+          serviceName: "product-service"
+          directory: "Product.Service"
+
+  deploy-order:
+    if: contains(github.event.head_commit.message, 'Order.Service') || startsWith(github.ref, 'refs/heads/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy Order Service to Railway
+        uses: railwayapp/railway-deploy@v1
+        with:
+          apiKey: ${{ secrets.RAILWAY_API_KEY }}
+          projectId: ${{ secrets.ORDER_PROJECT_ID }}
+          serviceName: "order-service"
+          directory: "Order.Service"
+
+  deploy-payment:
+    if: contains(github.event.head_commit.message, 'Payment.Service') || startsWith(github.ref, 'refs/heads/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy Payment Service to Railway
+        uses: railwayapp/railway-deploy@v1
+        with:
+          apiKey: ${{ secrets.RAILWAY_API_KEY }}
+          projectId: ${{ secrets.PAYMENT_PROJECT_ID }}
+          serviceName: "payment-service"
+          directory: "Payment.Service"
+
+  deploy-api-gateway:
+    if: contains(github.event.head_commit.message, 'ApiGateway.Ocelot') || startsWith(github.ref, 'refs/heads/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy API Gateway to Railway
+        uses: railwayapp/railway-deploy@v1
+        with:
+          apiKey: ${{ secrets.RAILWAY_API_KEY }}
+          projectId: ${{ secrets.API_GATEWAY_PROJECT_ID }}
+          serviceName: "api-gateway"
+          directory: "ApiGateway.Ocelot"
