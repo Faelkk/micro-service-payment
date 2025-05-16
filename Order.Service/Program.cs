@@ -13,7 +13,8 @@ builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddHttpClient<IOrderRepository, OrderRepository>(client =>
 {
-    client.BaseAddress = new Uri("http://api.gateway:5012");
+    client.BaseAddress = new Uri("https://api-gateway-production-2bd6.up.railway.app");
+
 });
 
 

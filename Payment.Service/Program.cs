@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<IPaymentRepository, PaymentRepository>(client =>
 {
-    client.BaseAddress = new Uri("http://api.gateway:5012");
+    client.BaseAddress = new Uri("https://api-gateway-production-2bd6.up.railway.app");
 });
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
