@@ -1,69 +1,34 @@
-version: '3.8'
-
 services:
-
-  db-product:
-    image: postgres:15
-    container_name: db-product
-    environment:
-      POSTGRES_DB: productdb
-      POSTGRES_USER: sa
-      POSTGRES_PASSWORD: ProductDbPassword!
-    ports:
-      - "5433:5432"   
-    networks:
-      - my-api-payment
-
-  # Banco para Order (PostgreSQL)
-  db-order:
-    image: postgres:15
-    container_name: db-order
-    environment:
-      POSTGRES_DB: orderdb
-      POSTGRES_USER: sa
-      POSTGRES_PASSWORD: OrderDbPassword!
-    ports:
-      - "5434:5432"   
-    networks:
-      - my-api-payment
-
-  # Serviço de Produto
   product.services:
     container_name: product.service
     build: ./Product.Service
     networks:
       - my-api-payment
-    depends_on:
-      - db-product
     ports:
       - "5010:5010"
     environment:
       - APIPORT=5010
-      - DB_HOST=db-product
-      - DB_PORT=5432
-      - DB_NAME=productdb
-      - DB_USER=sa
-      - DB_PASSWORD=ProductDbPassword!
+      - DB_HOST=${DB_HOST_PRODUCT}
+      - DB_PORT=${DB_PORT_PRODUCT}
+      - DB_NAME=${DB_NAME_PRODUCT}
+      - DB_USER=${DB_USER_PRODUCT}
+      - DB_PASSWORD=${DB_PASSWORD_PRODUCT}
 
-  # Serviço de Pedido
   order.services:
     container_name: order.service
     build: ./Order.Service
     networks:
       - my-api-payment
-    depends_on:
-      - db-order
     ports:
       - "5011:5011"
     environment:
       - APIPORT=5011
-      - DB_HOST=db-order
-      - DB_PORT=5432
-      - DB_NAME=orderdb
-      - DB_USER=sa
-      - DB_PASSWORD=OrderDbPassword!
+      - DB_HOST=${DB_HOST_ORDER}
+      - DB_PORT=${DB_PORT_ORDER}
+      - DB_NAME=${DB_NAME_ORDER}
+      - DB_USER=${DB_USER_ORDER}
+      - DB_PASSWORD=${DB_PASSWORD_ORDER}
 
-  # Serviço de Pagamento
   payment.services:
     container_name: payment.service
     build: ./Payment.Service
@@ -73,26 +38,7 @@ services:
       - "5013:5013"
     environment:
       - APIPORT=5013
-      - DB_HOST=db-payment
-      - DB_PORT=5432
-      - DB_NAME=paymentdb
-      - DB_USER=sa
-      - DB_PASSWORD=PaymentDbPassword!
-
-  # API Gateway
-  api.gateway:
-    container_name: api.gateway
-    build: ./ApiGateway.Ocelot
-    ports:
-      - "5012:5012"
-    environment:
-      - APIPORT=5012
-    networks:
-      - my-api-payment
-    depends_on:
-      - product.services
-      - order.services
-      - payment.services
+      # Aqui você pode fazer igual se quiser ou deixar fixo
 
 networks:
   my-api-payment:
