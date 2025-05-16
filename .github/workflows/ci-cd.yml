@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install -g railway
+      - run: npm install -g @railway/cli
       - name: Deploy Order Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
@@ -51,7 +51,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install -g railway
+      - run: npm install -g @railway/cli
       - name: Deploy Payment Service to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
@@ -67,7 +67,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install -g railway
+      - run: npm install -g @railway/cli
       - name: Deploy API Gateway to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
