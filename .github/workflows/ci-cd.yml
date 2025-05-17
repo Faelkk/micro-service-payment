@@ -1,54 +1,95 @@
-name: CI/CD Microservices Railway
+name: Deploy Services to Railway
 
 on:
   push:
-    paths:
-      - "Product.Service/**"
-      - "Order.Service/**"
-      - "Payment.Service/**"
-      - "ApiGateway.Ocelot/**"
+    branches:
+      - test-ci-cd
 
 jobs:
   deploy-product:
-    if: contains(github.event.head_commit.message, 'Product.Service') || startsWith(github.ref, 'refs/heads/')
+    name: Deploy Product Service
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Debug - List root directory
+        run: ls -la
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+
       - name: Deploy Product Service to Railway
-        uses: railwayapp/cli-action@v1
-        with:
-          railwayToken: ${{ secrets.RAILWAY_API_KEY }}
-          command: up --service product-service --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir Product.Service
+        working-directory: ./Product.Service
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service product
 
   deploy-order:
-    if: contains(github.event.head_commit.message, 'Order.Service') || startsWith(github.ref, 'refs/heads/')
+    name: Deploy Order Service
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Debug - List root directory
+        run: ls -la
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+
       - name: Deploy Order Service to Railway
-        uses: railwayapp/cli-action@v1
-        with:
-          railwayToken: ${{ secrets.RAILWAY_API_KEY }}
-          command: up --service order-service --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir Order.Service
+        working-directory: ./Order.Service
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service order
 
   deploy-payment:
-    if: contains(github.event.head_commit.message, 'Payment.Service') || startsWith(github.ref, 'refs/heads/')
+    name: Deploy Payment Service
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Deploy Payment Service to Railway
-        uses: railwayapp/cli-action@v1
-        with:
-          railwayToken: ${{ secrets.RAILWAY_API_KEY }}
-          command: up --service payment-service --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir Payment.Service
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  deploy-api-gateway:
-    if: contains(github.event.head_commit.message, 'ApiGateway.Ocelot') || startsWith(github.ref, 'refs/heads/')
+      - name: Debug - List root directory
+        run: ls -la
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+
+      - name: Deploy Payment Service to Railway
+        working-directory: ./Payment.Service
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service payment
+
+  deploy-apigateway:
+    name: Deploy API Gateway (Ocelot)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Debug - List root directory
+        run: ls -la
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+
       - name: Deploy API Gateway to Railway
-        uses: railwayapp/cli-action@v1
-        with:
-          railwayToken: ${{ secrets.RAILWAY_API_KEY }}
-          command: up --service api-gateway --project ${{ secrets.RAILWAY_PROJECT_ID }} --rootDir ApiGateway.Ocelot
+        working-directory: ./ApiGateway.Ocelot
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service api-gateway
