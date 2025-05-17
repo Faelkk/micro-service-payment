@@ -1,4 +1,4 @@
-name: CI/CD Microservices Railway
+name: Deploy Services to Railway
 
 on:
   push:
@@ -7,97 +7,65 @@ on:
 
 jobs:
   deploy-product:
-    if: contains(github.event.head_commit.message, 'Product.Service') || startsWith(github.ref, 'refs/heads/')
+    name: Deploy Product Service
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Debug - List Product Folder
-        run: ls -la Product.Service
+      - name: Debug - List root directory
+        run: ls -la
 
       - name: Deploy Product Service to Railway
+        working-directory: ./Product.Service
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          cd Product.Service
-          railway up --service product
+        run: railway up --service product
 
   deploy-order:
-    if: contains(github.event.head_commit.message, 'Order.Service') || startsWith(github.ref, 'refs/heads/')
+    name: Deploy Order Service
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Debug - List Order Folder
-        run: ls -la Order.Service
+      - name: Debug - List root directory
+        run: ls -la
 
       - name: Deploy Order Service to Railway
+        working-directory: ./Order.Service
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          cd Order.Service
-          railway up --service order
+        run: railway up --service order
 
   deploy-payment:
-    if: contains(github.event.head_commit.message, 'Payment.Service') || startsWith(github.ref, 'refs/heads/')
+    name: Deploy Payment Service
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Debug - List Payment Folder
-        run: ls -la Payment.Service
+      - name: Debug - List root directory
+        run: ls -la
 
       - name: Deploy Payment Service to Railway
+        working-directory: ./Payment.Service
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          cd Payment.Service
-          railway up --service payment
+        run: railway up --service payment
 
-  deploy-api-gateway:
-    if: contains(github.event.head_commit.message, 'ApiGateway.Ocelot') || startsWith(github.ref, 'refs/heads/')
+  deploy-apigateway:
+    name: Deploy API Gateway (Ocelot)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Debug - List API Gateway Folder
-        run: ls -la ApiGateway.Ocelot
+      - name: Debug - List root directory
+        run: ls -la
 
       - name: Deploy API Gateway to Railway
+        working-directory: ./ApiGateway.Ocelot
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          cd ApiGateway.Ocelot
-          railway up --service api-gateway
+        run: railway up --service api-gateway
