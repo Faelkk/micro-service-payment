@@ -16,6 +16,12 @@ jobs:
       - name: Debug - List root directory
         run: ls -la
 
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+
       - name: Deploy Product Service to Railway
         working-directory: ./Product.Service
         env:
@@ -31,6 +37,12 @@ jobs:
 
       - name: Debug - List root directory
         run: ls -la
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
 
       - name: Deploy Order Service to Railway
         working-directory: ./Order.Service
@@ -48,6 +60,12 @@ jobs:
       - name: Debug - List root directory
         run: ls -la
 
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+
       - name: Deploy Payment Service to Railway
         working-directory: ./Payment.Service
         env:
@@ -63,6 +81,12 @@ jobs:
 
       - name: Debug - List root directory
         run: ls -la
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Add Railway to PATH
+        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
 
       - name: Deploy API Gateway to Railway
         working-directory: ./ApiGateway.Ocelot
