@@ -14,8 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Deploy Product Service to Railway
-        working-directory: ./Product.Service
-        run: railway up --service=product
+        run: |
+          cd Product.Service
+          railway up --service=product
 
   deploy-order:
     name: Deploy Order Service
@@ -27,8 +28,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Deploy Order Service to Railway
-        working-directory: ./Order.Service
-        run: railway up --service=order
+        run: |
+          cd Order.Service
+          railway up --service=order
 
   deploy-payment:
     name: Deploy Payment Service
@@ -40,8 +42,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Deploy Payment Service to Railway
-        working-directory: ./Payment.Service
-        run: railway up --service=payment
+        run: |
+          cd Payment.Service
+          railway up --service=payment
 
   deploy-apigateway:
     name: Deploy API Gateway (Ocelot)
@@ -53,5 +56,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Deploy API Gateway to Railway
-        working-directory: ./ApiGateway.Ocelot
-        run: railway up --service=api-gateway
+        run: |
+          cd ApiGateway.Ocelot
+          railway up --service=api-gateway
