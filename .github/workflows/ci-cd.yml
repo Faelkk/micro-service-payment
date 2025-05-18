@@ -9,87 +9,59 @@ jobs:
   deploy-product:
     name: Deploy Product Service
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/railwayapp/cli:latest
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        SVC_ID: product
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Debug - List root directory
-        run: ls -la
-
-      - name: Install Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
-
-      - name: Add Railway to PATH
-        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+      - uses: actions/checkout@v3
 
       - name: Deploy Product Service to Railway
         working-directory: ./Product.Service
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service product
+        run: railway up --service=${{ env.SVC_ID }}
 
   deploy-order:
     name: Deploy Order Service
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/railwayapp/cli:latest
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        SVC_ID: order
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Debug - List root directory
-        run: ls -la
-
-      - name: Install Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
-
-      - name: Add Railway to PATH
-        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+      - uses: actions/checkout@v3
 
       - name: Deploy Order Service to Railway
         working-directory: ./Order.Service
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service order
+        run: railway up --service=${{ env.SVC_ID }}
 
   deploy-payment:
     name: Deploy Payment Service
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/railwayapp/cli:latest
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        SVC_ID: payment
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Debug - List root directory
-        run: ls -la
-
-      - name: Install Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
-
-      - name: Add Railway to PATH
-        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+      - uses: actions/checkout@v3
 
       - name: Deploy Payment Service to Railway
         working-directory: ./Payment.Service
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service payment
+        run: railway up --service=${{ env.SVC_ID }}
 
   deploy-apigateway:
     name: Deploy API Gateway (Ocelot)
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/railwayapp/cli:latest
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        SVC_ID: api-gateway
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Debug - List root directory
-        run: ls -la
-
-      - name: Install Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
-
-      - name: Add Railway to PATH
-        run: echo "${HOME}/.railway/bin" >> $GITHUB_PATH
+      - uses: actions/checkout@v3
 
       - name: Deploy API Gateway to Railway
         working-directory: ./ApiGateway.Ocelot
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service api-gateway
+        run: railway up --service=${{ env.SVC_ID }}
