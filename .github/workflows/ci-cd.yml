@@ -1,7 +1,10 @@
+name: Deploy Services to Railway
+
 on:
   push:
     branches:
       - master
+      - test-ci-cd
 
 jobs:
   deploy-product:
@@ -13,6 +16,13 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: List workspace root
+        run: ls -la
+
+      - name: List Product.Service folder
+        run: ls -la Product.Service || echo "Folder not found"
+
       - name: Deploy Product Service to Railway
         run: |
           cd Product.Service
@@ -27,6 +37,13 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: List workspace root
+        run: ls -la
+
+      - name: List Order.Service folder
+        run: ls -la Order.Service || echo "Folder not found"
+
       - name: Deploy Order Service to Railway
         run: |
           cd Order.Service
@@ -41,6 +58,13 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: List workspace root
+        run: ls -la
+
+      - name: List Payment.Service folder
+        run: ls -la Payment.Service || echo "Folder not found"
+
       - name: Deploy Payment Service to Railway
         run: |
           cd Payment.Service
@@ -55,6 +79,13 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: List workspace root
+        run: ls -la
+
+      - name: List ApiGateway.Ocelot folder
+        run: ls -la ApiGateway.Ocelot || echo "Folder not found"
+
       - name: Deploy API Gateway to Railway
         run: |
           cd ApiGateway.Ocelot
