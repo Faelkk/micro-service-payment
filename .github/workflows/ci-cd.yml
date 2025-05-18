@@ -1,5 +1,3 @@
-name: Deploy Services to Railway
-
 on:
   push:
     branches:
@@ -13,13 +11,11 @@ jobs:
       image: ghcr.io/railwayapp/cli:latest
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        SVC_ID: product
     steps:
       - uses: actions/checkout@v3
-
       - name: Deploy Product Service to Railway
         working-directory: ./Product.Service
-        run: railway up --service=${{ env.SVC_ID }}
+        run: railway up --service=product
 
   deploy-order:
     name: Deploy Order Service
@@ -28,13 +24,11 @@ jobs:
       image: ghcr.io/railwayapp/cli:latest
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        SVC_ID: order
     steps:
       - uses: actions/checkout@v3
-
       - name: Deploy Order Service to Railway
         working-directory: ./Order.Service
-        run: railway up --service=${{ env.SVC_ID }}
+        run: railway up --service=order
 
   deploy-payment:
     name: Deploy Payment Service
@@ -43,13 +37,11 @@ jobs:
       image: ghcr.io/railwayapp/cli:latest
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        SVC_ID: payment
     steps:
       - uses: actions/checkout@v3
-
       - name: Deploy Payment Service to Railway
         working-directory: ./Payment.Service
-        run: railway up --service=${{ env.SVC_ID }}
+        run: railway up --service=payment
 
   deploy-apigateway:
     name: Deploy API Gateway (Ocelot)
@@ -58,10 +50,8 @@ jobs:
       image: ghcr.io/railwayapp/cli:latest
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        SVC_ID: api-gateway
     steps:
       - uses: actions/checkout@v3
-
       - name: Deploy API Gateway to Railway
         working-directory: ./ApiGateway.Ocelot
-        run: railway up --service=${{ env.SVC_ID }}
+        run: railway up --service=api-gateway
