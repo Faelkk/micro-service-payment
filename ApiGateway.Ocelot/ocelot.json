@@ -35,24 +35,6 @@
       ],
       "UpstreamPathTemplate": "/order/{id}",
       "UpstreamHttpMethod": [ "GET", "PATCH", "DELETE" ]
-    },
-    {
-      "DownstreamPathTemplate": "/payment/create-checkout-session",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        { "Host": "payment-production-9323.up.railway.app", "Port": 80 }
-      ],
-      "UpstreamPathTemplate": "/payment/create-checkout-session",
-      "UpstreamHttpMethod": [ "POST" ]
-    },
-    {
-      "DownstreamPathTemplate": "/payment/webhook",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        { "Host": "payment-production-9323.up.railway.app", "Port": 80 }
-      ],
-      "UpstreamPathTemplate": "/payment/webhook",
-      "UpstreamHttpMethod": [ "POST" ]
     }
   ],
   "GlobalConfiguration": {
