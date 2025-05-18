@@ -13,13 +13,13 @@ builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddHttpClient("PaymentService", client =>
 {
-    client.BaseAddress = new Uri("http://payment-production-9323.up.railway.app");
+    client.BaseAddress = new Uri("https://payment-production-9323.up.railway.app");
 });
 
 
 builder.Services.AddHttpClient("ProductService", client =>
 {
-    client.BaseAddress = new Uri("http://product-production-3c23.up.railway.app");
+    client.BaseAddress = new Uri("https://product-production-3c23.up.railway.app");
 });
 
 
